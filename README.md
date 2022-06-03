@@ -6,4 +6,5 @@ Snake game with C++ programming language
 > git clone https://github.com/c-o-b-r-a/console_snake_game.git
 2. Compile .cpp file:
 > gcc main.cpp -lstdc++ -o main
+
 > ./main
