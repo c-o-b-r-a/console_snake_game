@@ -11,9 +11,6 @@ using namespace std;
 #define KEY_S 115
 #define KEY_D 100
 
-// void sleep(double milliseconds);
-
-// bool gameOver;
 const int width = 80;
 const int height = 30;
 const int x = width / 2;
@@ -37,8 +34,15 @@ bool isGameOver(int x, int y)
     return false;
 }
 
+void repeat(char c, int num)
+{
+    for (int i = 0; i < num; i++)
+        cout << c;
+}
+
 void Setup()
 {
+    score = 0;
     activeKEY = 0;
     srand(time(0));
     mouseX = rand() % (width - 2) + 1;
@@ -46,8 +50,24 @@ void Setup()
     coordinates = {{x, y}};
 }
 
+void drawScoreTable()
+{
+    repeat(' ', 33);
+    cout << "--------------\n";
+
+    repeat(' ', 33);
+    cout << "|Score : " << score;
+    int spaceN = score != 0 ? (int)log10(score) : 0;
+    repeat(' ', 3 - spaceN);
+    cout << "|\n";
+
+    repeat(' ', 33);
+    cout << "--------------\n";
+}
+
 void Draw()
 {
+    drawScoreTable();
     for (int i = 0; i < height; i++)
     {
         cout << "#";
@@ -68,9 +88,7 @@ void Draw()
         }
         cout << "#\n";
     }
-    usleep(100000);
-    // cout << "\nMouse X,Y:" << mouseX << " " << mouseY << endl;
-    // cout << "X,Y: " << coordinates[0].first << " " << coordinates[0].second << endl;
+    usleep(50000);
 }
 
 void Input()
@@ -108,6 +126,7 @@ void Logic()
 
     if (mouseX == lastX && mouseY == lastY)
     {
+        score++;
         coordinates.insert(coordinates.begin(), coordinates.front());
         srand(time(0));
         mouseX = rand() % (width - 2) + 1;
@@ -135,7 +154,7 @@ void Logic()
     pair<int, int> newCoordinate = {lastX, lastY};
     coordinates.erase(coordinates.begin());
     coordinates.push_back(newCoordinate);
-    
+
     if (isGameOver(lastX, lastY))
     {
         system("clear");
